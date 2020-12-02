@@ -1,0 +1,15 @@
+[Unit]
+Description=This service exposes an API to retrieve User Risk Score from CASB and FBA.
+
+[Service]
+Environment=
+WorkingDirectory=
+User=
+ExecStart=/bin/bash -c 'pipenv run python ${APP_HOME}/src/modules/main_run.py'
+Restart=on-failure
+RestartSec=60
+StartLimitBurst=3
+StartLimitInterval=360
+
+[Install]
+WantedBy=multi-user.target
