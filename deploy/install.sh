@@ -26,4 +26,6 @@ main() {
     sudo chmod +x "${_dir}"/*.sh
 }
 
-main "$@"
+# main "$@"
+
+echo "Traditional way is not supported anymore, only docker implementation is available"
