@@ -1,5 +1,4 @@
 # # # API Configurations # # #
-# Required
 
 # API port number, default 5000
 api_port: 5000

@@ -2,9 +2,6 @@ import logging
 from ssl import PROTOCOL_TLSv1_2, SSLContext
 from time import sleep
 
-from flask import Flask
-from gevent.pywsgi import WSGIServer
-
 from casb_risk_score_util import load_casb_risk_scores
 from common import (
     convert_mints_to_secs,
@@ -13,6 +10,8 @@ from common import (
     get_user_defined_configuration,
 )
 from fba_risk_level_util import load_fba_risk_levels
+from flask import Flask
+from gevent.pywsgi import WSGIServer
 from risk_level_api import risk_level_api
 
 

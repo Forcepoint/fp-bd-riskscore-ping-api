@@ -4,19 +4,20 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
 
 [packages]
-flask = "*"
-py-healthcheck = "*"
-kafka-python = "*"
-requests = "*"
-sqlitedict = "*"
-PyYAML = "*"
-gevent = "*"
+flask = "~=2.0.1"
+py-healthcheck = "~=1.10.1"
+kafka-python = "~=2.0.2"
+requests = "~=2.25.1"
+sqlitedict = "~=1.7.0"
+PyYAML = "~=5.4.1"
+gevent = "~=21.1.2"
 
 [dev-packages]
-black = "==19.3b0"
+black = "==20.8b1"
+typing-extensions = "*"
 flake8 = "*"
 isort = "*"
 mypy = "*"

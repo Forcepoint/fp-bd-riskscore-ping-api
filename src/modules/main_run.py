@@ -4,12 +4,12 @@ import logging
 from multiprocessing import Process
 
 from gevent import monkey
+
 # Monkey-patching need to be loaded before importing SSL
 monkey.patch_all()
 
 from configs import Configs
 from risk_level_service import load_casb_data, load_fba_data, run_risk_level_api
-
 
 if __name__ == "__main__":
     configs = Configs()

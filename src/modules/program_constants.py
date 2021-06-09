@@ -18,6 +18,14 @@ CASB_FETCH_DATA_PERIOD_IN_MIN = "casb_fetch_data_period_in_min"
 API_PORT = "api_port"
 CASB_RISK_SCORE_FETCH_ENABLE = "casb_risk_score_fetch_enable"
 SSL_PASSWORD = "ssl_password"
+
+SSL_CAFILE = "ssl_cafile"
+SSL_CERTFILE = "ssl_certfile"
+SSL_KEYFILE = "ssl_keyfile"
+SSL_CERTFILE_DEFAULT = "/app/fp-riskexporter-api/certs/server.crt"
+SSL_KEYFILE_DEFAULT = "/app/fp-riskexporter-api/certs/server.key"
+SSL_CAFILE_DEFAULT = "/app/fp-riskexporter-api/certs/kafka-ca.crt"
+
 RISK_LEVEL_VALUES_DICT = {
     "risk_level_1": 1,
     "risk_level_2": 2,
@@ -25,7 +33,6 @@ RISK_LEVEL_VALUES_DICT = {
     "risk_level_4": 4,
     "risk_level_5": 5,
 }
-CASB_REQUIRED_CONFIGS_SSL_LIST = ["ssl_certfile", "ssl_keyfile"]
 CASB_REQUIRED_CONFIGS_LIST = [
     "casb_saas_url",
     "casb_login_name",
@@ -40,9 +47,6 @@ FBA_RISK_SCORE_FETCH_ENABLE = "fba_risk_score_fetch_enable"
 FBA_REQUIRED_CONFIGS_LIST = [
     "kafka_server_name",
     "kafka_server_ip",
-    "ssl_cafile",
-    "ssl_certfile",
-    "ssl_keyfile",
 ]
 USER_CONFIGS_LIST = chain(
     [
@@ -51,6 +55,9 @@ USER_CONFIGS_LIST = chain(
         FBA_RISK_SCORE_FETCH_ENABLE,
         API_PORT,
         SSL_PASSWORD,
+        SSL_CAFILE,
+        SSL_CERTFILE,
+        SSL_KEYFILE,
     ],
     CASB_REQUIRED_CONFIGS_LIST,
     FBA_REQUIRED_CONFIGS_LIST,

@@ -1,12 +1,6 @@
 import json
 from http import HTTPStatus
 
-from flask import Blueprint
-from flask import current_app as app
-from flask import jsonify
-from healthcheck import HealthCheck
-from sqlitedict import SqliteDict
-
 from common import (
     get_current_iso8601_format,
     get_risk_level,
@@ -15,7 +9,12 @@ from common import (
     is_login_success,
     is_url_available,
 )
+from flask import Blueprint
+from flask import current_app as app
+from flask import jsonify
+from healthcheck import HealthCheck
 from program_constants import CASB_DB_FILE, FBA_DB_FILE
+from sqlitedict import SqliteDict
 
 risk_level_api = Blueprint("risk_level_api", __name__)
 

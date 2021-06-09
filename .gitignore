@@ -146,3 +146,4 @@ docker-compose.yml
 container-files/*.tar.gz
 cfg-dev.yml
 flaskapp-nginx.conf
+requirements.txt

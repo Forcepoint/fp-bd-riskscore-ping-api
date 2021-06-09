@@ -9,8 +9,6 @@ from subprocess import getstatusoutput
 import requests
 import yaml
 from kafka import KafkaConsumer
-from requests import session
-
 from program_constants import (
     CASB_LOGIN_FORM_ACTION_PATH,
     KAFKA_PORT,
@@ -18,6 +16,7 @@ from program_constants import (
     RISK_LEVEL_TOPIC_NAME,
     RISK_LEVEL_VALUES_DICT,
 )
+from requests import session
 
 
 def create_dir(dir_path):
@@ -51,7 +50,8 @@ def is_url_available(url):
                 response = s.get(url)
                 if response.status_code == 200:
                     return True, "{} available - OK".format(url)
-        except:
+        except Exception as err:
+            logging.error("is_url_available run time error: {}".format(err))
             pass
     return False, "{} is not reachable - ERROR".format(url)
 
@@ -73,16 +73,19 @@ def is_login_success(url, username, password):
                         content = str(response.content)
                         if "<title>Forcepoint CASB</title>" in content:
                             return True, "{} login success - OK".format(url)
-        except:
+        except Exception as err:
+            logging.error("is_login_success run time error: {}".format(err))
             pass
     return False, "{} login failure - ERROR".format(url)
 
 
 def is_host_available(host_name):
     if host_name:
-        status, _ = getstatusoutput("ping -c 1 {}".format(host_name))
+        status, output = getstatusoutput("ping -c 1 {}".format(host_name))
         if status == 0:
             return True, "{} available - OK".format(host_name)
+        else:
+            logging.error("is_host_available run time error: {}".format(output))
     return False, "{} is not reachable - ERROR".format(host_name)
 
 
@@ -102,7 +105,8 @@ def is_kafka_connection_successful(
         )
         consumer.close()
         return True, "{} connection is successful - OK".format(host_name)
-    except:
+    except Exception as err:
+        logging.error("is_kafka_connection_successful run time error: {}".format(err))
         return False, "{} connection is not successful - ERROR".format(host_name)
 
 

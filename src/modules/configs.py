@@ -1,6 +1,5 @@
 import logging
 import os
-from itertools import chain
 
 from common import (
     create_dir,
@@ -12,10 +11,16 @@ from common import (
 from log_config import LogConfig
 from program_constants import (
     CASB_REQUIRED_CONFIGS_LIST,
-    CASB_REQUIRED_CONFIGS_SSL_LIST,
     FBA_REQUIRED_CONFIGS_LIST,
     LOG_FILE_NAME,
     NO_VALUE_PROVIDED,
+    SSL_CAFILE,
+    SSL_CAFILE_DEFAULT,
+    SSL_CERTFILE,
+    SSL_CERTFILE_DEFAULT,
+    SSL_KEYFILE,
+    SSL_KEYFILE_DEFAULT,
+    SSL_PASSWORD,
     USER_CONFIG_FILE,
     USER_CONFIGS_LIST,
 )
@@ -52,6 +57,19 @@ class Configs:
         self.user_config = get_user_config_env_values(
             self.user_config, USER_CONFIGS_LIST
         )
+        # Defaults
+        self.user_config[SSL_CERTFILE] = get_user_defined_configuration(
+            self.user_config, SSL_CERTFILE, SSL_CERTFILE_DEFAULT
+        )
+        self.user_config[SSL_KEYFILE] = get_user_defined_configuration(
+            self.user_config, SSL_KEYFILE, SSL_KEYFILE_DEFAULT
+        )
+        self.user_config[SSL_PASSWORD] = get_user_defined_configuration(
+            self.user_config, SSL_PASSWORD, NO_VALUE_PROVIDED
+        )
+        self.user_config[SSL_CAFILE] = get_user_defined_configuration(
+            self.user_config, SSL_CAFILE, SSL_CAFILE_DEFAULT
+        )
         self._user_defind_required_configs(self.user_config)
         self._user_defind_runtime_safeguard(self.user_config)
 
@@ -61,16 +79,7 @@ class Configs:
             user_config, "casb_risk_score_fetch_enable", False
         )
         if casb_risk_score_fetch_enable:
-            http_only_enable = get_user_defined_configuration(
-                user_config, "http_only", False
-            )
-            if http_only_enable:
-                is_user_configurations_complete(user_config, CASB_REQUIRED_CONFIGS_LIST)
-            else:
-                is_user_configurations_complete(
-                    user_config,
-                    chain(CASB_REQUIRED_CONFIGS_SSL_LIST, CASB_REQUIRED_CONFIGS_LIST),
-                )
+            is_user_configurations_complete(user_config, CASB_REQUIRED_CONFIGS_LIST)
 
         """ FBA Configs """
         fba_risk_score_fetch_enable = get_user_defined_configuration(
@@ -102,22 +111,4 @@ class Configs:
         if not user_config["fba_risk_score_fetch_enable"]:
             user_config["kafka_server_name"] = get_user_defined_configuration(
                 user_config, "kafka_server_name", NO_VALUE_PROVIDED
-            )
-            user_config["ssl_cafile"] = get_user_defined_configuration(
-                user_config, "ssl_cafile", NO_VALUE_PROVIDED
-            )
-
-        """ http only Configs """
-        http_only_enable = get_user_defined_configuration(
-            user_config, "http_only", False
-        )
-        if http_only_enable:
-            user_config["ssl_certfile"] = get_user_defined_configuration(
-                user_config, "ssl_certfile", NO_VALUE_PROVIDED
-            )
-            user_config["ssl_keyfile"] = get_user_defined_configuration(
-                user_config, "ssl_keyfile", NO_VALUE_PROVIDED
-            )
-            user_config["ssl_password"] = get_user_defined_configuration(
-                user_config, "ssl_password", NO_VALUE_PROVIDED
             )

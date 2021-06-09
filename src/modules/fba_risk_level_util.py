@@ -5,8 +5,6 @@ from signal import SIGTERM
 from time import sleep
 
 from kafka import KafkaConsumer, KafkaProducer
-from sqlitedict import SqliteDict
-
 from program_constants import (
     FBA_DB_FILE,
     KAFKA_CONSUMER_GROUP_ID,
@@ -14,6 +12,7 @@ from program_constants import (
     KAFKA_SECURITY_PROTOCOL,
     RISK_LEVEL_TOPIC_NAME,
 )
+from sqlitedict import SqliteDict
 
 
 def _value_deserializer(serialized_value):
@@ -66,9 +65,9 @@ def load_fba_risk_levels(configs):
             logging.info(kafka_message.value)
             _update_fab_data_store(kafka_message, configs.db_dir)
 
-    except:
-        error_msg = "load_fba_risk_levels - error connecting to fba kafka hostname: {}".format(
-            configs.user_config["kafka_server_name"]
+    except Exception as err:
+        error_msg = "load_fba_risk_levels - error connecting to fba kafka hostname: {}, {}".format(
+            configs.user_config["kafka_server_name"], err
         )
         logging.error(error_msg)
         print(error_msg)
@@ -101,9 +100,9 @@ def publish_fba_risk_level(configs, kafka_message_lst):
             producer.send(RISK_LEVEL_TOPIC_NAME, value=message)
             sleep(1)
         producer.close()
-    except:
-        error_msg = "publish_fba_risk_level - error connecting to fba kafka hostname: {}".format(
-            configs.user_config["kafka_server_name"]
+    except Exception as err:
+        error_msg = "publish_fba_risk_level - error connecting to fba kafka hostname: {}, {}".format(
+            configs.user_config["kafka_server_name"], err
         )
         logging.error(error_msg)
         print(error_msg)

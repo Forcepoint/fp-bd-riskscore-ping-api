@@ -9,7 +9,7 @@ source "${_dir}"/conf-variables.sh
 
 remove_project_specific_files() {
     cd "${_dir}"/"${_PROJECT_NAME}"
-    rm -r ./src/modules/__pycache__
+    rm -rf ./src/modules/__pycache__
 }
 
 copy_content() {
@@ -18,6 +18,8 @@ copy_content() {
     cp -r "${_dir}"/../deploy "${_dir}"/"${_PROJECT_NAME}"
     cp "${_dir}"/../cfg.yml "${_dir}"/"${_PROJECT_NAME}"
     cp "${_dir}"/../Pipfile "${_dir}"/"${_PROJECT_NAME}"
+    # pipenv run pip freeze > requirements.txt
+    # cp "${_dir}"/../requirements.txt "${_dir}"/"${_PROJECT_NAME}"
 }
 
 delete_content() {
@@ -49,10 +51,10 @@ create_deployment() {
 main() {
     cd "${_dir}"/..
     git status --porcelain | grep -q '^' &&
-        echo "You have files that is not commited, check your git status!" || {
+        echo "You have files that is not commited, check your git status!"; return 1 || {
         echo "$(git status)" | grep -qw "Your branch is up to date with 'origin/master'." ||
-            echo "Code is not up to-date, check your git status!" && {
-            create_deployment
+            echo "Code is not up to-date, check your git status!" ; return 1 && {
+            create_deployment; return 0
         }
     }
 }

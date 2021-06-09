@@ -2,13 +2,12 @@ import json
 import logging
 
 import requests
-from sqlitedict import SqliteDict
-
 from program_constants import (
     CASB_DB_FILE,
     CASB_LOGIN_FORM_ACTION_PATH,
     CASB_USERS_CSV_PATH,
 )
+from sqlitedict import SqliteDict
 
 
 def _map_account_name_to_login_names(accounts):
@@ -94,9 +93,11 @@ def load_casb_risk_scores(configs):
                     "score"
                 ]
         casb_risk_score_data_source.close()
-    except:
-        error_msg = "error connecting to casb url: {}".format(
-            configs.user_config["casb_saas_url"]
+    except Exception as err:
+        error_msg = (
+            "load_casb_risk_scores - error connecting to casb url: {}, {}".format(
+                configs.user_config["casb_saas_url"], err
+            )
         )
         logging.error(error_msg)
         print(error_msg)
